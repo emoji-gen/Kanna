@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 'use strict'
 
+const Promise = require('bluebird')
 const config = require('config')
 const ms = require('ms')
+const promiseRetry = require('promise-retry')
 const { WebClient } = require('@slack/client')
 
 // ----------------------------------------------------------------------------
@@ -11,7 +13,8 @@ const { SLACK_API_TOKEN } = process.env
 const SLACK_CHANNEL = config.get('slack.channel')
 const SLACK_ICON_URL = config.get('slack.iconUrl')
 const SLACK_USERNAME = config.get('slack.username')
-const SLACK_BEFORE = config.get('slack.before')
+const SLACK_SEARCH_BEFORE = config.get('slack.search.before')
+const SLACK_SEARCH_COUNT = config.get('slack.search.count')
 
 // ----------------------------------------------------------------------------
 
@@ -20,16 +23,42 @@ const web = new WebClient(SLACK_API_TOKEN)
 !async function() {
   const now = new Date()
   const before = new Date()
-  before.setTime(now - ms(SLACK_BEFORE))
+  before.setTime(now - ms(SLACK_SEARCH_BEFORE))
 
-  console.log(before.toLocaleString())
-  // const { messages } = await web.search.messages('in:#emoji')
+  const beforeText = [
+    before.getFullYear(),
+    before.getMonth() + 1,
+    before.getDate(),
+  ].join('-')
+  const searchText = `in:#${SLACK_CHANNEL} before:${beforeText}`
 
-  // while (true) {
-  //   for (let i = 0; i < 10; ++i) {
-  //     const isBot = messages.matches[i].user, messages.matches[i].username)
-  //   }
-  // }
+  let deletedCount = 0
+  let page = 1
+  let maxPage = Infinity
+  for (let page = 1; page < maxPage;) {
+    const { messages } = await web.search.messages(searchText, {
+      count: SLACK_SEARCH_COUNT,
+      page,
+    })
+    if (maxPage === Infinity) {
+      console.log(`${deletedCount} messages found`)
+      maxPage = Math.ceil(messages.total / SLACK_SEARCH_COUNT)
+    }
+    if (messages.matches.length === 0) {
+      ++page
+      continue
+    }
+
+    await Promise.map(messages.matches, async (match) => {
+      const isBot = !match.user
+      if (isBot) {
+        await promiseRetry(() => web.chat.delete(match.ts, match.channel.id))
+        ++deletedCount
+      }
+    }, { concurrency: 10 })
+  }
+
+  console.log(`Deleted ${deletedCount} messages`)
 }()
 
 // vim: se et ft=javascript ts=2 sw=2 sts=2 :

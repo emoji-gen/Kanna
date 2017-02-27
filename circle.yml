@@ -1,0 +1,11 @@
+machine:
+  node:
+    version: 7.6.0
+
+deployment:
+  production:
+    branch: master
+    commands:
+      - npm install -g retry-cli@0.4.0
+      - git fetch --unshallow || true
+      - retry -- git push $OPENSHIFT_REPOSITORY master

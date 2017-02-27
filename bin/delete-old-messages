@@ -6,6 +6,7 @@ const config = require('config')
 const ms = require('ms')
 const promiseRetry = require('promise-retry')
 const { WebClient } = require('@slack/client')
+const template = require('lodash.template')
 
 // ----------------------------------------------------------------------------
 
@@ -13,6 +14,7 @@ const { SLACK_API_TOKEN } = process.env
 const SLACK_CHANNEL = config.get('slack.channel')
 const SLACK_ICON_URL = config.get('slack.iconUrl')
 const SLACK_USERNAME = config.get('slack.username')
+const SLACK_MESSAGE = config.get('slack.message')
 const SLACK_SEARCH_BEFORE = config.get('slack.search.before')
 const SLACK_SEARCH_COUNT = config.get('slack.search.count')
 
@@ -59,6 +61,17 @@ const web = new WebClient(SLACK_API_TOKEN)
   }
 
   console.log(`Deleted ${deletedCount} messages`)
+
+  if (deletedCount > 0) {
+    const message = template(SLACK_MESSAGE)({
+      ymd: beforeText,
+      count: deletedCount,
+    })
+    await web.chat.postMessage(SLACK_CHANNEL, message, {
+      username: SLACK_USERNAME,
+      icon_url: SLACK_ICON_URL,
+    })
+  }
 }()
 
 // vim: se et ft=javascript ts=2 sw=2 sts=2 :

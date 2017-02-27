@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -eu
+
+PATH=${OPENSHIFT_REPO_DIR}bin:$PATH
+
+exec delete-old-messages

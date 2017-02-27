@@ -1,6 +1,35 @@
 #!/usr/bin/env node
 'use strict'
 
-console.log('hello')
+const config = require('config')
+const ms = require('ms')
+const { WebClient } = require('@slack/client')
+
+// ----------------------------------------------------------------------------
+
+const { SLACK_API_TOKEN } = process.env
+const SLACK_CHANNEL = config.get('slack.channel')
+const SLACK_ICON_URL = config.get('slack.iconUrl')
+const SLACK_USERNAME = config.get('slack.username')
+const SLACK_BEFORE = config.get('slack.before')
+
+// ----------------------------------------------------------------------------
+
+const web = new WebClient(SLACK_API_TOKEN)
+
+!async function() {
+  const now = new Date()
+  const before = new Date()
+  before.setTime(now - ms(SLACK_BEFORE))
+
+  console.log(before.toLocaleString())
+  // const { messages } = await web.search.messages('in:#emoji')
+
+  // while (true) {
+  //   for (let i = 0; i < 10; ++i) {
+  //     const isBot = messages.matches[i].user, messages.matches[i].username)
+  //   }
+  // }
+}()
 
 // vim: se et ft=javascript ts=2 sw=2 sts=2 :

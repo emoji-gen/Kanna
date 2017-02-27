@@ -8,5 +8,10 @@
     "start": "node --use_strict start.js"
   },
   "author": "Ionut-Cristian Florescu <ionut.florescu@gmail.com>",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@slack/client": "^3.8.1",
+    "config": "^1.25.1",
+    "ms": "^0.7.2"
+  }
 }

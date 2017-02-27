@@ -3,6 +3,6 @@
 set -eu
 
 export PATH=${OPENSHIFT_REPO_DIR}bin:$PATH
-export NODE_CONFIG_DIR=${OPENSHIFT_REPO_DIR}
+export NODE_CONFIG_DIR=${OPENSHIFT_REPO_DIR}config
 
 exec delete-old-messages

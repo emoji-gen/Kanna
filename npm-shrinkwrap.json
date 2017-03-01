@@ -3,7 +3,12 @@
   "version": "1.0.1",
   "dependencies": {
     "@slack/client": {
-      "version": "3.8.1"
+      "version": "3.8.1",
+      "dependencies": {
+        "retry": {
+          "version": "0.9.0"
+        }
+      }
     },
     "agent-base": {
       "version": "2.0.1"
@@ -83,6 +88,9 @@
     "ecc-jsbn": {
       "version": "0.1.1",
       "optional": true
+    },
+    "err-code": {
+      "version": "1.1.1"
     },
     "escape-string-regexp": {
       "version": "1.0.5"
@@ -181,6 +189,15 @@
     "lodash": {
       "version": "4.17.4"
     },
+    "lodash._reinterpolate": {
+      "version": "3.0.0"
+    },
+    "lodash.template": {
+      "version": "4.4.0"
+    },
+    "lodash.templatesettings": {
+      "version": "4.1.0"
+    },
     "mime-db": {
       "version": "1.26.0"
     },
@@ -205,6 +222,9 @@
     "pkginfo": {
       "version": "0.4.0"
     },
+    "promise-retry": {
+      "version": "1.1.1"
+    },
     "punycode": {
       "version": "1.4.1"
     },
@@ -215,7 +235,7 @@
       "version": "2.79.0"
     },
     "retry": {
-      "version": "0.9.0"
+      "version": "0.10.1"
     },
     "semver": {
       "version": "5.0.3"

@@ -43,7 +43,7 @@ const web = new WebClient(SLACK_API_TOKEN)
       page,
     })
     if (maxPage === Infinity) {
-      console.log(`${deletedCount} messages found`)
+      console.log(`${messages.total} messages found`)
       maxPage = Math.ceil(messages.total / SLACK_SEARCH_COUNT)
     }
     if (messages.matches.length === 0) {

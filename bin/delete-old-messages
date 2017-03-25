@@ -4,6 +4,7 @@
 const Promise = require('bluebird')
 const config = require('config')
 const ms = require('ms')
+const pad = require('pad-left')
 const promiseRetry = require('promise-retry')
 const { WebClient } = require('@slack/client')
 const template = require('lodash.template')
@@ -29,8 +30,8 @@ const web = new WebClient(SLACK_API_TOKEN)
 
   const beforeText = [
     before.getFullYear(),
-    before.getMonth() + 1,
-    before.getDate(),
+    pad(before.getMonth() + 1, 2, '0'),
+    pad(before.getDate(), 2, '0'),
   ].join('-')
   const searchText = `in:#${SLACK_CHANNEL} before:${beforeText}`
 

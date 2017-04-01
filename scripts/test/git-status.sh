@@ -4,12 +4,12 @@ set -eu
 
 if [ -n "$(git diff --raw)" ]; then
   echo "git repository is dirty"
-  git diff --raw
+  git diff --raw --text
   exit 1
 fi
 
 if [ -n "$(git diff --cached --raw)" ]; then
   echo "git repository is dirty"
-  git diff --cached --raw
+  git diff --cached --raw --text
   exit 1
 fi

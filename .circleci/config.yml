@@ -1,0 +1,38 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/workspace
+    docker:
+      - image: node:7.6.0
+
+    steps:
+      - checkout
+      - restore_cache:
+          key: Kanna-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      - run:
+          name: System information
+          command: |
+            echo "Node $(node -v)"
+            echo "Yarn v$(yarn --version)"
+      - run:
+          name: Install dependencies
+          command: yarn
+      - run:
+          name: Test
+          command: yarn test
+      - save_cache:
+          key: Kanna-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/workspace/node_modules
+            - ~/.cache/yarn/
+      - add_ssh_keys:
+          fingerprints:
+            - "6b:c9:ec:9a:da:d7:ab:a6:06:b4:50:f3:c9:d8:c8:d2"
+      - deploy:
+          name: Deploy Master to OpenShift
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              npm install -g retry-cli@0.4.0
+              git fetch --unshallow || true
+              retry -- git push $OPENSHIFT_REPOSITORY master
+            fi

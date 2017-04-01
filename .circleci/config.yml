@@ -20,11 +20,6 @@ jobs:
       - run:
           name: Test
           command: yarn test
-      - run:
-          name: Check npm-shrinkwrap.json
-          command: |
-            npm shrinkwrap --dev
-            ./scripts/test/git-status.sh
       - save_cache:
           key: Kanna-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:

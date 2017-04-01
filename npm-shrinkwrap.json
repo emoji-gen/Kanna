@@ -213,6 +213,9 @@
     "options": {
       "version": "0.0.6"
     },
+    "pad-left": {
+      "version": "2.1.0"
+    },
     "pinkie": {
       "version": "2.0.4"
     },
@@ -230,6 +233,9 @@
     },
     "qs": {
       "version": "6.3.1"
+    },
+    "repeat-string": {
+      "version": "1.6.1"
     },
     "request": {
       "version": "2.79.0"

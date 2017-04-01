@@ -34,5 +34,6 @@ jobs:
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               npm install -g retry-cli@0.4.0
               git fetch --unshallow || true
+              ssh-keyscan -H $OPENSHIFT_HOST >> ~/.ssh/known_hosts
               retry -- git push $OPENSHIFT_REPOSITORY master
             fi

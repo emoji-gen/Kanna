@@ -15,7 +15,8 @@
     "lodash.template": "^4.4.0",
     "ms": "^0.7.2",
     "pad-left": "^2.1.0",
-    "promise-retry": "^1.1.1"
+    "promise-retry": "^1.1.1",
+    "promise.sleep": "^0.2.0"
   },
   "author": {
     "name": "Pine Mizune",

@@ -340,7 +340,7 @@ mime-types@^2.1.12, mime-types@~2.1.7:
   dependencies:
     mime-db "~1.26.0"
 
-ms@0.7.2, ms@^0.7.2:
+ms@0.7.2, ms@^0.7.1, ms@^0.7.2:
   version "0.7.2"
   resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.2.tgz#ae25cf2512b3885a1d95d7f037868d8431124765"
 
@@ -378,6 +378,12 @@ promise-retry@^1.1.1:
   dependencies:
     err-code "^1.0.0"
     retry "^0.10.0"
+
+promise.sleep@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/promise.sleep/-/promise.sleep-0.2.0.tgz#84ed3f5803bb4232f46747ca32552825f48b70d4"
+  dependencies:
+    ms "^0.7.1"
 
 punycode@^1.4.1:
   version "1.4.1"

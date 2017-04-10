@@ -6,6 +6,7 @@ const config = require('config')
 const ms = require('ms')
 const pad = require('pad-left')
 const promiseRetry = require('promise-retry')
+const sleep = require('promise.sleep')
 const { WebClient } = require('@slack/client')
 const template = require('lodash.template')
 
@@ -56,9 +57,10 @@ const web = new WebClient(SLACK_API_TOKEN)
       const isBot = !match.user
       if (isBot) {
         await promiseRetry(() => web.chat.delete(match.ts, match.channel.id))
+        await sleep(1000)
         ++deletedCount
       }
-    }, { concurrency: 10 })
+    }, { concurrency: 1 })
   }
 
   console.log(`Deleted ${deletedCount} messages`)

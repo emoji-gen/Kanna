@@ -7,7 +7,7 @@ module.exports = {
     username: 'kanna',
     message: '<%= ymd %> 以前のメッセージを <%= count %> 件けしたー',
     search: {
-      before: '7 days',
+      before: '3 days',
       count: 1000,
     },
   },

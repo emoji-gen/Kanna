@@ -2,7 +2,8 @@
 
 module.exports = {
   slack: {
-    channel: 'emoji',
+    notifyChannel: 'emoji',
+    deleteChannel: 'emoji-notice',
     iconUrl: 'https://i.imgur.com/z9ZkgzU.png',
     username: 'kanna',
     message: '<%= ymd %> 以前のメッセージを <%= count %> 件けしたー',

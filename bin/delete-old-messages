@@ -13,7 +13,8 @@ const template = require('lodash.template')
 // ----------------------------------------------------------------------------
 
 const { SLACK_API_TOKEN } = process.env
-const SLACK_CHANNEL = config.get('slack.channel')
+const SLACK_DELETE_CHANNEL = config.get('slack.deleteChannel')
+const SLACK_NOTIFY_CHANNEL = config.get('slack.notifyChannel')
 const SLACK_ICON_URL = config.get('slack.iconUrl')
 const SLACK_USERNAME = config.get('slack.username')
 const SLACK_MESSAGE = config.get('slack.message')
@@ -34,7 +35,7 @@ const web = new WebClient(SLACK_API_TOKEN)
     pad(before.getMonth() + 1, 2, '0'),
     pad(before.getDate(), 2, '0'),
   ].join('-')
-  const searchText = `in:#${SLACK_CHANNEL} before:${beforeText}`
+  const searchText = `in:#${SLACK_DELETE_CHANNEL} before:${beforeText}`
 
   let deletedCount = 0
   let page = 1
@@ -70,7 +71,7 @@ const web = new WebClient(SLACK_API_TOKEN)
       ymd: beforeText,
       count: deletedCount,
     })
-    await web.chat.postMessage(SLACK_CHANNEL, message, {
+    await web.chat.postMessage(SLACK_NOTIFY_CHANNEL, message, {
       username: SLACK_USERNAME,
       icon_url: SLACK_ICON_URL,
     })

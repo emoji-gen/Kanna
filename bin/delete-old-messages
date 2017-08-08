@@ -57,7 +57,9 @@ const web = new WebClient(SLACK_API_TOKEN)
     await Promise.map(messages.matches, async (match) => {
       const isBot = !match.user
       if (isBot) {
-        await promiseRetry(() => web.chat.delete(match.ts, match.channel.id))
+        try {
+          await promiseRetry(() => web.chat.delete(match.ts, match.channel.id))
+        } catch (e) { }
         await sleep(1000)
         ++deletedCount
       }

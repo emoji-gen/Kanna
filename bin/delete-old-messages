@@ -3,6 +3,7 @@
 
 const Promise = require('bluebird')
 const config = require('config')
+const log = require('fancy-log')
 const ms = require('ms')
 const pad = require('pad-left')
 const promiseRetry = require('promise-retry')
@@ -46,7 +47,7 @@ const web = new WebClient(SLACK_API_TOKEN)
       page,
     })
     if (maxPage === Infinity) {
-      console.log(`${messages.total} messages found`)
+      log(`${messages.total} messages found`)
       maxPage = Math.ceil(messages.total / SLACK_SEARCH_COUNT)
     }
     if (messages.matches.length === 0) {
@@ -66,7 +67,7 @@ const web = new WebClient(SLACK_API_TOKEN)
     }, { concurrency: 1 })
   }
 
-  console.log(`Deleted ${deletedCount} messages`)
+  log(`Deleted ${deletedCount} messages`)
 
   if (deletedCount > 0) {
     const message = template(SLACK_MESSAGE)({

@@ -5,13 +5,18 @@
   "description": "Slack bot for Emoji Generator organizers",
   "main": "start.js",
   "scripts": {
-    "start": "node --use_strict start.js",
+    "start": "node app.js",
     "test": "true"
+  },
+  "engines": {
+    "node": "8.1.4"
   },
   "dependencies": {
     "@slack/client": "^3.8.1",
     "bluebird": "^3.4.7",
+    "cfenv": "^1.0.4",
     "config": "^1.25.1",
+    "cron": "^1.2.1",
     "fancy-log": "^1.3.0",
     "lodash.template": "^4.4.0",
     "ms": "^0.7.2",
@@ -24,5 +29,5 @@
     "email": "pinemz@gmail.com",
     "url": "https://github.com/pine"
   },
-  "license": "ISC"
+  "license": "MIT"
 }

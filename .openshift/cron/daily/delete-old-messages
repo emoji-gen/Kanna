@@ -1,9 +1,0 @@
-#!/bin/bash
-
-set -eu
-
-export PATH=${OPENSHIFT_REPO_DIR}bin:$PATH
-export NODE_CONFIG_DIR=${OPENSHIFT_REPO_DIR}config
-export TZ="Asia/Tokyo"
-
-exec delete-old-messages

@@ -1,4 +1,4 @@
-# Kanna &nbsp;[![CircleCI](https://circleci.com/gh/emoji-gen/Kanna/tree/master.svg?style=shield)](https://circleci.com/gh/emoji-gen/Kannna/tree/master) [![Dependency Status](https://gemnasium.com/badges/github.com/emoji-gen/Kanna.svg)](https://gemnasium.com/github.com/emoji-gen/Kanna)
+# Kanna &nbsp;[![CircleCI](https://circleci.com/gh/emoji-gen/Kanna/tree/master.svg?style=shield)](https://circleci.com/gh/emoji-gen/Kanna/tree/master) [![Dependency Status](https://gemnasium.com/badges/github.com/emoji-gen/Kanna.svg)](https://gemnasium.com/github.com/emoji-gen/Kanna)
 
 Slack bot for Emoji Generator organizers.
 

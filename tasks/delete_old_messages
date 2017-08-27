@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 'use strict'
 
 const Promise = require('bluebird')
@@ -24,9 +23,8 @@ const SLACK_SEARCH_COUNT = config.get('slack.search.count')
 
 // ----------------------------------------------------------------------------
 
-const web = new WebClient(SLACK_API_TOKEN)
-
-!async function() {
+module.exports = async function() {
+  const web = new WebClient(SLACK_API_TOKEN)
   const now = new Date()
   const before = new Date()
   before.setTime(now - ms(SLACK_SEARCH_BEFORE))
@@ -79,6 +77,6 @@ const web = new WebClient(SLACK_API_TOKEN)
       icon_url: SLACK_ICON_URL,
     })
   }
-}()
+}
 
 // vim: se et ft=javascript ts=2 sw=2 sts=2 :

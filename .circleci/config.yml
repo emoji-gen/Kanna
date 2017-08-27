@@ -25,15 +25,17 @@ jobs:
           paths:
             - ~/workspace/node_modules
             - ~/.cache/yarn/
-      - add_ssh_keys:
-          fingerprints:
-            - "6b:c9:ec:9a:da:d7:ab:a6:06:b4:50:f3:c9:d8:c8:d2"
       - deploy:
           name: Deploy Master to OpenShift
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              npm install -g retry-cli@0.4.0
-              git fetch --unshallow || true
-              ssh-keyscan -H $OPENSHIFT_HOST >> ~/.ssh/known_hosts
-              retry -- git push $OPENSHIFT_REPOSITORY master
+              curl -L 'https://cli.run.pivotal.io/stable?release=debian64&version=6.29.0&source=github-rel' -o cf-cli.deb
+              dpkg -i cf-cli.deb
+
+              cf -v
+              cf api https://api.au-syd.bluemix.net
+              cf login -u $BLUEMIX_USER -p $BLUEMIX_PASSWORD
+              for i in {1..3}; do
+                cf push && break
+              done
             fi

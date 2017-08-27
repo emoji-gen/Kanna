@@ -3,22 +3,17 @@
 Slack bot for Emoji Generator organizers.
 
 ## Getting started
-### 1. Create OpenShift Account
-### 2. Create OpenShift Application
-Cartridges
- - [Custom Node.js cartridge for OpenShift](https://github.com/icflorescu/openshift-cartridge-nodejs)
- - [Cron](https://hub.openshift.com/addons/26-cron)
-
-### 3. Add environment variables
+### 1. Create Bluemix Account
+### 2. Add environment variables
 ```
-$ rhc env set SLACK_API_TOKEN=XXX -a appname
+$ cf set-env YOUR_APP_NAME SLACK_API_TOKEN XXX
 ```
 
 ### 4. Deploy
 ```
-$ git remote add deploy ssh://xxxxxxxxxxxxxxxxxxxxxxxx@appname-domain.rhcloud.com/~/git/appname.git/
-$ git push deploy master
+$ cf login -u username@example.com
+$ cf push
 ```
 
 ## License
-ISC &copy; [Emoji Generator](https://emoji.pine.moe/)
+MIT &copy; [Emoji Generator](https://emoji.pine.moe/)

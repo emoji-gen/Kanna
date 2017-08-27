@@ -4,7 +4,7 @@ const http = require('http')
 const cfenv = require('cfenv')
 
 const appEnv = cfenv.getAppEnv()
-const server = http.createServer(function (req, res) {
+const server = http.createServer((req, res) => {
   if (req.url === '/' || req.url === '/health' || req.url === '/healthcheck') {
     res.writeHead(200)
     res.end('OK')

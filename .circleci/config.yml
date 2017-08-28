@@ -29,6 +29,8 @@ jobs:
           name: Deploy Master to OpenShift
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              apt-get update -qq
+              apt-get install -y apt-transport-https
               wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | apt-key add -
               echo "deb http://packages.cloudfoundry.org/debian stable main" | tee /etc/apt/sources.list.d/cloudfoundry-cli.list
               apt-get update -qq

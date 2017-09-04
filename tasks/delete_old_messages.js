@@ -13,7 +13,7 @@ const template = require('lodash.template')
 // ----------------------------------------------------------------------------
 
 const { SLACK_API_TOKEN } = process.env
-const SLACK_DELETE_CHANNEL = config.get('slack.deleteChannel')
+const SLACK_DELETE_CHANNELS = config.get('slack.deleteChannels')
 const SLACK_NOTIFY_CHANNEL = config.get('slack.notifyChannel')
 const SLACK_ICON_URL = config.get('slack.iconUrl')
 const SLACK_USERNAME = config.get('slack.username')
@@ -34,35 +34,38 @@ module.exports = async function() {
     pad(before.getMonth() + 1, 2, '0'),
     pad(before.getDate(), 2, '0'),
   ].join('-')
-  const searchText = `in:#${SLACK_DELETE_CHANNEL} before:${beforeText}`
 
   let deletedCount = 0
-  let page = 1
-  let maxPage = Infinity
-  for (let page = 1; page < maxPage;) {
-    const { messages } = await web.search.messages(searchText, {
-      count: SLACK_SEARCH_COUNT,
-      page,
-    })
-    if (maxPage === Infinity) {
-      log(`${messages.total} messages found`)
-      maxPage = Math.ceil(messages.total / SLACK_SEARCH_COUNT)
-    }
-    if (messages.matches.length === 0) {
-      ++page
-      continue
-    }
+  for (let channel of SLACK_DELETE_CHANNELS) {
+    const searchText = `in:#${channel} before:${beforeText}`
 
-    await Promise.map(messages.matches, async (match) => {
-      const isBot = !match.user
-      if (isBot) {
-        try {
-          await promiseRetry(() => web.chat.delete(match.ts, match.channel.id))
-        } catch (e) { }
-        await sleep(1000)
-        ++deletedCount
+    let page = 1
+    let maxPage = Infinity
+    for (let page = 1; page < maxPage;) {
+      const { messages } = await web.search.messages(searchText, {
+        count: SLACK_SEARCH_COUNT,
+        page,
+      })
+      if (maxPage === Infinity) {
+        log(`${messages.total} messages found in ${channel}`)
+        maxPage = Math.ceil(messages.total / SLACK_SEARCH_COUNT)
       }
-    }, { concurrency: 1 })
+      if (messages.matches.length === 0) {
+        ++page
+        continue
+      }
+
+      await Promise.map(messages.matches, async (match) => {
+        const isBot = !match.user
+        if (isBot) {
+          try {
+            await promiseRetry(() => web.chat.delete(match.ts, match.channel.id))
+          } catch (e) { }
+          await sleep(1000)
+          ++deletedCount
+        }
+      }, { concurrency: 1 })
+    }
   }
 
   log(`Deleted ${deletedCount} messages`)

@@ -30,11 +30,11 @@ jobs:
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               apt-get update -qq
-              apt-get install -y apt-transport-https
+              apt-get install -qq -y apt-transport-https
               wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | apt-key add -
               echo "deb http://packages.cloudfoundry.org/debian stable main" | tee /etc/apt/sources.list.d/cloudfoundry-cli.list
               apt-get update -qq
-              apt-get install -y cf-cli
+              apt-get install -qq -y cf-cli
 
               cf -v
               cf api https://api.au-syd.bluemix.net

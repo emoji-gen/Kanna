@@ -19,7 +19,6 @@ const SLACK_ICON_URL = config.get('slack.iconUrl')
 const SLACK_USERNAME = config.get('slack.username')
 const SLACK_MESSAGE = config.get('slack.message')
 const SLACK_SEARCH_BEFORE = config.get('slack.search.before')
-const SLACK_SEARCH_COUNT = config.get('slack.search.count')
 
 // ----------------------------------------------------------------------------
 
@@ -39,31 +38,34 @@ module.exports = async function() {
   for (let channel of SLACK_DELETE_CHANNELS) {
     const searchText = `in:#${channel} before:${beforeText}`
 
-    let page = 1
     let maxPage = Infinity
-    for (let page = 1; page < maxPage;) {
+    for (let page = 1; page <= maxPage;) {
       const { messages } = await web.search.messages(searchText, {
-        count: SLACK_SEARCH_COUNT,
         page,
       })
+
       if (maxPage === Infinity) {
         log(`${messages.total} messages found in ${channel}`)
-        maxPage = Math.ceil(messages.total / SLACK_SEARCH_COUNT)
+        maxPage = messages.paging.pages
       }
+
       if (messages.matches.length === 0) {
         ++page
         continue
       }
 
-      await Promise.map(messages.matches, async (match) => {
-        const isBot = !match.user
-        if (isBot) {
-          try {
-            await promiseRetry(() => web.chat.delete(match.ts, match.channel.id))
-          } catch (e) { }
-          await sleep(1000)
-          ++deletedCount
-        }
+      const botMessages = messages.matches.filter(match => !match.user)
+      if (botMessages.length === 0) {
+        ++page
+        continue
+      }
+
+      await Promise.map(botMessages, async match => {
+        try {
+          await promiseRetry(() => web.chat.delete(match.ts, match.channel.id))
+        } catch (e) { }
+        await sleep(1000)
+        ++deletedCount
       }, { concurrency: 1 })
     }
   }

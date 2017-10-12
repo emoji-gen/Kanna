@@ -9,7 +9,6 @@ module.exports = {
     message: '<%= ymd %> 以前のメッセージを <%= count %> 件けしたー',
     search: {
       before: '3 days',
-      count: 1000,
     },
   },
 }

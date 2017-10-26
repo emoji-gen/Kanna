@@ -26,7 +26,7 @@ jobs:
             - ~/workspace/node_modules
             - ~/.cache/yarn/
       - deploy:
-          name: Deploy Master to Bluemix
+          name: Deploy Master to Heroku
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               bash .circleci/setup-heroku.sh

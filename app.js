@@ -1,9 +1,8 @@
 'use strict'
 
+const log = require('fancy-log')
 const http = require('http')
-const cfenv = require('cfenv')
 
-const appEnv = cfenv.getAppEnv()
 const server = http.createServer((req, res) => {
   if (req.url === '/' || req.url === '/health' || req.url === '/healthcheck') {
     res.writeHead(200)
@@ -14,8 +13,13 @@ const server = http.createServer((req, res) => {
   }
 })
 
-server.listen(appEnv.port, '0.0.0.0', function () {
-  console.log(`server starting on ${appEnv.url}`)
+server.on('clientError', (err, socket) => {
+  socket.end('HTTP/1.1 400 Bad Request\r\n\r\n')
+})
+
+const port = process.env.PORT || 5000
+server.listen(port, '0.0.0.0', function () {
+  log(`Listining: http://0.0.0.0:${port}`)
 })
 
 // ----------------------------------------------------------------------------

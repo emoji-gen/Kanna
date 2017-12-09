@@ -27,6 +27,6 @@ server.listen(port, '0.0.0.0', function () {
 const { CronJob } = require('cron')
 const deleteOldMessages = require('./tasks/delete_old_messages')
 
-const job = new CronJob('00 15 * * *', async () => {
+const job = new CronJob('03 30 * * *', async () => {
   await deleteOldMessages()
 }, null, true, 'Asia/Tokyo')

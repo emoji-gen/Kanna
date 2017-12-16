@@ -66,7 +66,6 @@ module.exports = async function() {
         } catch (e) { }
         await sleep(1000)
         ++deletedCount
-        console.log(`Deleted`, match.ts)
       }, { concurrency: 1 })
     }
   }

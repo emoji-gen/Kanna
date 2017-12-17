@@ -40,18 +40,13 @@ module.exports = async function() {
 
     let maxPage = Infinity
     for (let page = 1; page <= maxPage;) {
-      const { messages } = await web.search.messages(searchText, {
+      const { messages } = await promiseRetry(() => web.search.messages(searchText, {
         page,
-      })
+      }))
 
       if (maxPage === Infinity) {
         log(`${messages.total} messages found in ${channel}`)
         maxPage = messages.paging.pages
-      }
-
-      if (messages.matches.length === 0) {
-        ++page
-        continue
       }
 
       const botMessages = messages.matches.filter(match => !match.user)
